@@ -139,3 +139,5 @@ yarn-error.log
 
 # Secret key file
 secret_key.txt
+
+public
