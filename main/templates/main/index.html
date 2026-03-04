@@ -1,0 +1,43 @@
+{% load manifest_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Hotel</title>
+    
+    {# Load CSS files from manifest #}
+    {% manifest_css "main" %}
+    
+    {# Alternative: Get files as variables #}
+    {% comment %}
+    {% manifest_css_files "main" as css_files %}
+    {% for css_file in css_files %}
+        <link rel="stylesheet" href="{{ css_file }}">
+    {% endfor %}
+    {% endcomment %}
+</head>
+<body>
+    <header>
+        <h1>Welcome to Cat Hotel</h1>
+    </header>
+    
+    <main>
+        <p>This is an example template showing how to use the manifest client.</p>
+        
+        {# Display loaded assets for debugging #}
+        {% if debug %}
+        <div class="debug-info">
+            <h3>Loaded Assets:</h3>
+            {% manifest_js_files "main" as js_files %}
+            {% manifest_css_files "main" as css_files %}
+            <p>CSS Files: {{ css_files|join:", " }}</p>
+            <p>JS Files: {{ js_files|join:", " }}</p>
+        </div>
+        {% endif %}
+    </main>
+    
+    {# Load JavaScript files from manifest #}
+    {% manifest_js "main" %}
+</body>
+</html>

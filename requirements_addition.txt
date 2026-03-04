@@ -1,0 +1,2 @@
+# Add this to your requirements.txt file
+requests>=2.25.0
