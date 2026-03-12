@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect
@@ -25,8 +26,15 @@ def spa_view(request, entry_point="pages/home/entry", page_props=None):
     if page_props is None:
         page_props = {}
     
-    js_files = get_js_files(entry_point)
-    css_files = get_css_files(entry_point)
+    static_url = settings.STATIC_URL
+
+    def resolve(path):
+        if path.startswith(('http://', 'https://', '//')):
+            return path
+        return f"{static_url}{path}"
+
+    js_files = [resolve(f) for f in get_js_files(entry_point)]
+    css_files = [resolve(f) for f in get_css_files(entry_point)]
     
     # Get CSRF token for this request
     csrf_token = get_token(request)
