@@ -1,49 +1,37 @@
 from django import template
 from django.utils.safestring import mark_safe
+from django.templatetags.static import static
 from ..manifest_client import get_js_files, get_css_files
 
 register = template.Library()
 
 
+def _resolve_path(file_path: str) -> str:
+    """Prepend STATIC_URL to relative paths; leave absolute URLs (http/https) untouched."""
+    if file_path.startswith(('http://', 'https://', '//')):
+        return file_path
+    return static(file_path)
+
+
 @register.simple_tag
 def manifest_js(entry):
-    """
-    Template tag to get JavaScript files for an entry point.
-    Usage: {% manifest_js "main" %}
-    """
     files = get_js_files(entry)
-    html_tags = []
-    for file_path in files:
-        html_tags.append(f'<script src="{file_path}"></script>')
-    return mark_safe('\n'.join(html_tags))
+    tags = [f'<script src="{_resolve_path(f)}"></script>' for f in files]
+    return mark_safe('\n'.join(tags))
 
 
 @register.simple_tag
 def manifest_css(entry):
-    """
-    Template tag to get CSS files for an entry point.
-    Usage: {% manifest_css "main" %}
-    """
     files = get_css_files(entry)
-    html_tags = []
-    for file_path in files:
-        html_tags.append(f'<link rel="stylesheet" href="{file_path}">')
-    return mark_safe('\n'.join(html_tags))
+    tags = [f'<link rel="stylesheet" href="{_resolve_path(f)}">' for f in files]
+    return mark_safe('\n'.join(tags))
 
 
 @register.simple_tag
 def manifest_js_files(entry):
-    """
-    Template tag to get just the list of JavaScript file paths.
-    Usage: {% manifest_js_files "main" as js_files %}
-    """
-    return get_js_files(entry)
+    return [_resolve_path(f) for f in get_js_files(entry)]
 
 
 @register.simple_tag
 def manifest_css_files(entry):
-    """
-    Template tag to get just the list of CSS file paths.
-    Usage: {% manifest_css_files "main" as css_files %}
-    """
-    return get_css_files(entry)
+    return [_resolve_path(f) for f in get_css_files(entry)]
