@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import Header from './Header/Header';
 import { Box, ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react';
 import '../utils/i18n';
-import config from '@/lib/theme/config';
+import config from '@/library/theme/config';
 import { ResponsiveProvider } from '@/utils/useResponsive';
 import { Toaster } from './toaster';
 

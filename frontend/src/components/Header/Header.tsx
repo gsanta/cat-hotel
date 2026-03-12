@@ -41,7 +41,7 @@ const Header = () => {
           <Button asChild colorPalette="orange" variant="ghost">
             <a href="/">
               <Text color={textColor} fontSize="xl" fontWeight="bold">
-                Cicatanya
+                Cicahotel
               </Text>
             </a>
           </Button>

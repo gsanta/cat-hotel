@@ -1,4 +1,4 @@
-import breakpoints from '@/lib/theme/breakpoints';
+import breakpoints from '@/library/theme/breakpoints';
 import { useMediaQuery } from '@chakra-ui/react';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 

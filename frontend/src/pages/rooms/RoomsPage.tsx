@@ -5,14 +5,14 @@ import RoomDropdown from './components/RoomDropdown';
 import Booking from '@/types/Booking';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import useBookRoom from '@/hooks/useBookRoom';
-import DatePicker from '@/lib/DatePicker/DatePicker';
+import DatePicker from '@/library/DatePicker/DatePicker';
 import { DateTime } from 'luxon';
 import { t } from 'i18next';
 import useResponsive from '@/utils/useResponsive';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import CatInputList from './components/CatInputList';
-import { DateRange } from '@/lib/DatePicker/types/DatePicker.types';
-import { createDateRange } from '@/lib/DatePicker/hooks/useSelection';
+import { DateRange } from '@/library/DatePicker/types/DatePicker.types';
+import { createDateRange } from '@/library/DatePicker/hooks/useSelection';
 import { getFieldErrorMessage } from '@/utils/validation';
 
 type RoomsPageProps = {

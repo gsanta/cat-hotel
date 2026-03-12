@@ -1,15 +1,6 @@
-import {
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/dialog';
+import { DialogBody, DialogContent, DialogFooter, DialogRoot, DialogTrigger } from '@/components/dialog';
 import { Button } from '../../button';
-import { Text } from '@chakra-ui/react';
+import { Tabs, Text } from '@chakra-ui/react';
 import useLogin from '@/hooks/useLogin';
 import { useEffect, useState } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -24,14 +15,18 @@ const LoginDialog = () => {
   const { t } = useTranslation();
   const { isPageScrolled } = useGlobalProps();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentForm, setCurrentForm] = useState<'login' | 'register'>('login');
+  const [currentTab, setCurrentTab] = useState<'login' | 'register'>('login');
 
   const onClose = () => {
     setIsOpen(false);
   };
 
   const { loginError, resetLogin, onSubmitLogin, registerLogin, resetLoginForm, handleLoginSubmit } = useLogin({
-    onClose,
+    onClose: () => {
+      setIsOpen(false);
+      resetLoginForm();
+      resetLogin();
+    },
   });
 
   const { registerRegister, registerError, resetRegisterForm, handleRegisterSubmit, onSubmitRegister, resetRegister } =
@@ -48,7 +43,7 @@ const LoginDialog = () => {
     resetRegisterForm();
     resetLogin();
     resetRegister();
-  }, [currentForm, resetLoginForm, resetRegisterForm]);
+  }, [resetLoginForm, resetRegisterForm]);
 
   return (
     <DialogRoot open={isOpen}>
@@ -61,31 +56,44 @@ const LoginDialog = () => {
       </DialogTrigger>
 
       <DialogContent
-        bgColor="orange.solid"
+        bgColor="bg.muted"
         as="form"
-        onSubmit={currentForm === 'login' ? handleLoginSubmit(onSubmitLogin) : handleRegisterSubmit(onSubmitRegister)}
+        onSubmit={currentTab === 'login' ? handleLoginSubmit(onSubmitLogin) : handleRegisterSubmit(onSubmitRegister)}
       >
-        <DialogHeader>
+        {/* <DialogHeader>
           <DialogTitle color="bg.subtle">{t('login')}</DialogTitle>
           <DialogCloseTrigger onClick={onClose} />
-        </DialogHeader>
+        </DialogHeader> */}
 
         <DialogBody display="flex" flexDirection="column" gap="4">
-          {currentForm === 'login' ? (
+          <Tabs.Root
+            variant="enclosed"
+            fitted
+            value={currentTab}
+            onValueChange={(e) => setCurrentTab(e.value as 'login' | 'register')}
+          >
+            <Tabs.List>
+              <Tabs.Trigger value="login">Login</Tabs.Trigger>
+              <Tabs.Trigger value="register">Register</Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="login">{<LoginForm register={registerLogin} />}</Tabs.Content>
+            <Tabs.Content value="register">{<RegistrationForm register={registerRegister} />}</Tabs.Content>
+          </Tabs.Root>
+          {/* {currentForm === 'login' ? (
             <LoginForm register={registerLogin} setCurrentForm={setCurrentForm} />
           ) : (
             <RegistrationForm register={registerRegister} setCurrentForm={setCurrentForm} />
-          )}
+          )} */}
 
           <ErrorMessage error={loginError || registerError} />
         </DialogBody>
 
         <DialogFooter>
-          <Button onClick={onClose} variant="subtle">
+          <Button colorPalette="orange" onClick={onClose} variant="subtle">
             {t('cancel')}
           </Button>
-          <Button colorPalette="yellow" type="submit" variant="solid">
-            {currentForm === 'login' ? t('login') : t('register')}
+          <Button colorPalette="orange" type="submit" variant="solid">
+            {currentTab === 'login' ? t('login') : t('register')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -10,7 +10,7 @@ const ErrorMessage = ({ error }: ErrorMessageProps) => {
   if (!error) return null;
 
   return (
-    <Alert status="error" title="Login failed" variant="surface">
+    <Alert status="error" title="Login failed" variant="solid">
       {error.response?.data.code ? ErrorMessages[error.response?.data.code] : ''}
     </Alert>
   );

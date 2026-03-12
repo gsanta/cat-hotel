@@ -76,7 +76,7 @@ const ProfilePage = ({ bookings, rooms }: ProfilePageProps) => {
               <Table.Body>
                 {bookings.items.map((booking) => (
                   <Table.Row key={booking.id}>
-                    <Table.Cell>{roomMap[booking.roomId] || booking.roomId}</Table.Cell>
+                    <Table.Cell height="{sizes.64}">{roomMap[booking.roomId] || booking.roomId}</Table.Cell>
                     <Table.Cell>{DateTime.fromISO(booking.startDate).toLocaleString(DateTime.DATE_MED)}</Table.Cell>
                     <Table.Cell>{DateTime.fromISO(booking.endDate).toLocaleString(DateTime.DATE_MED)}</Table.Cell>
                     <Table.Cell>
