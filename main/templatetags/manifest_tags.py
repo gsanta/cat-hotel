@@ -1,6 +1,6 @@
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
-from django.templatetags.static import static
 from ..manifest_client import get_js_files, get_css_files
 
 register = template.Library()
@@ -10,7 +10,7 @@ def _resolve_path(file_path: str) -> str:
     """Prepend STATIC_URL to relative paths; leave absolute URLs (http/https) untouched."""
     if file_path.startswith(('http://', 'https://', '//')):
         return file_path
-    return static(file_path)
+    return f"{settings.STATIC_URL}{file_path}"
 
 
 @register.simple_tag
